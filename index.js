@@ -22,7 +22,7 @@ app.get('/google-feed.xml', (req, res) => {
     item.ele("g:link", {}, product.link);
     item.ele("g:image_link", {}, product.image_link);
     item.ele("g:availability", {}, product.availability);
-    item.ele("g:price", {}, product.price.toFixed(2));
+    item.ele("g:price", {}, `${product.price.toFixed(2)} ${product.currency}`); 
     item.ele("g:brand", {}, product.brand);
     item.ele("g:condition", {}, "new");
     item.ele("g:product_type", {}, "Apparel & Accessories > Clothing > Shoes");
