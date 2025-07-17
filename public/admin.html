@@ -1,0 +1,44 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Admin</h1>
+  <form id="product-form">  
+    <input type="text" name="title" placeholder="Title">
+    <input type="text" name="description" placeholder="Description">
+    <input type="text" name="price" placeholder="Price">
+    <input type="text" name="image_link" placeholder="Image Link">
+    <input type="text" name="brand" placeholder="Brand">
+    <input type="text" name="availability" placeholder="Availability">
+    <input type="text" name="currency" placeholder="Currency">
+    <input type="text" name="link" placeholder="Link">
+    <input type="submit" value="Submit">
+  </form>
+  <a href="/google-feed.xml">Google Feed</a>
+  <script>
+    const form = document.querySelector('#product-form');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch('/app/products', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        console.log('server response:', result.message);
+      } catch (error) {
+        console.error('server response:', error);
+      }
+    });
+  </script>
+</body>
+</html>
