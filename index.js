@@ -2,6 +2,7 @@ const express = require('express');
 const builder = require('xmlbuilder');
 const products = require('./data');
 const path = require('path');
+const analytics = require('./analytics');
 
 const app = express();
 app.use(express.json());
@@ -43,6 +44,27 @@ app.post('/app/products', (req, res) => {
   res.json({ message: 'Product added successfully' });
 })
 
+function addView(productId, source) {
+  if(!analytics[productId]) {
+    analytics[productId] = {}
+  }
+  if(!analytics[productId][source]) {
+    analytics[productId][source] = 0;
+  }
+  analytics[productId][source]++;
+}
+
+app.post('/track-view/:productId/:source', (req, res) => {
+ 
+  const { productId, source } = req.params;
+  console.log('track-view1111', productId, source);
+  addView(productId, source);
+  res.json({ message: `View track from ${source} for ${productId}` });
+})
+
+app.get('/analytics', (req, res) => {
+  res.json({ message: 'Analytics data retrieved successfully', analytics });
+})
 
 app.listen(3000, () => { 
   console.log('Google Shopping Feed is available at http://localhost:3000/google-feed.xml');
