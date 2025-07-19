@@ -20,7 +20,36 @@
   <button onclick="trackView('p001', 'google')">Track View</button>
   <button onclick="trackView('p001', 'instagram')">Track View</button>
   <button onclick="trackView('p003', 'tiktok')">Track View</button>
+
+  <form id="campaign-form">
+    <input type="text" name="link" placeholder="Link">
+    <label for="google">Google</label>
+    <input type="checkbox" name="google" placeholder="Google">
+    <label for="instagram">Instagram</label>
+    <input type="checkbox" name="instagram" placeholder="Instagram">
+    <label for="tiktok">Tiktok</label>
+    <input type="checkbox" name="tiktok" placeholder="Tiktok">
+    <input type="text" name="cost" placeholder="Cost" value="0">
+    <input type="text" name="followers" placeholder="Followers" value="0">
+    <input type="submit" value="Submit">
+  </form>
   <a href="/google-feed.xml">Google Feed</a>
+
+  <table id="campaigns-table">
+    <thead>
+      <tr>
+        <th>Product ID</th>
+        <th>Source</th>
+        <th>Cost</th>
+        <th>Followers</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+
+  </table>
+  <button onclick="showCampaigns()">Show Campaigns</button>
+  <button onclick="analytics()">Analytics</button>
   <script>
     const form = document.querySelector('#product-form');
     form.addEventListener('submit', async (e) => {
@@ -55,6 +84,77 @@
       console.log('server response:', result.message);
     }
 
+    const campaignForm = document.querySelector('#campaign-form');
+    campaignForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(campaignForm);
+      const link = formData.get('link');
+      const source = formData.get('google') ? 'google' : formData.get('instagram') ? 'instagram' : formData.get('tiktok') ? 'tiktok' : null;
+      const newLink= `${link}?utm_source=${source}`;
+      formData.set('link', newLink);
+      const data = Object.fromEntries(formData.entries());
+      try {
+        if(!link) {
+          alert('Link is required');
+          return;
+        }
+        const res = await fetch('/app/campaigns', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        console.log('server response:', result.message);
+      } catch (error) {
+        console.error('server response:', error);
+      }
+    });
+
+    const checkboxes = document.querySelectorAll('#campaign-form input[type="checkbox"]');
+    checkboxes.forEach((checkbox => {
+      checkbox.addEventListener('change', () => {
+        if(checkbox.checked) {
+          checkboxes.forEach(cb => {
+            if(cb.name !== checkbox.name) {
+              cb.checked = false;
+            }
+          });
+        }
+      });
+    }));
+
+    const showCampaigns = async () => {
+      const res = await fetch('/app/campaigns', {
+        method: 'GET'
+      });
+      const {campaigns} = await res.json();
+      const tbody = document.querySelector('#campaigns-table tbody');
+      tbody.innerHTML = '';
+      campaigns.forEach(campaign => {
+        console.log('campaign', campaign.productId);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${campaign.productId}</td>
+          <td>${campaign.source}</td>
+          <td>${campaign.cost}</td>
+          <td>${campaign.followers}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    const analytics = async () => {
+      const res = await fetch('/app/campaigns/analytics', {
+        method: 'GET'
+      });
+      const {result} = await res.json(); 
+      result.forEach(item => {
+        console.log('analytics', item.message);
+      });
+    }
+   
   </script>
 </body>
 </html>
