@@ -1,0 +1,18 @@
+#campaigns-table {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+#campaigns-table td, th {
+  padding: 10px;
+  text-align: left;
+}
+
+#campaigns-table th {
+  background-color: #f0f0f0;
+}
+
+#campaigns-table td:nth-child(1) {
+  width: 10%;
+}

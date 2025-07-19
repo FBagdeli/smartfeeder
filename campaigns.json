@@ -1,2 +1,38 @@
 [
+  {
+    "productId": "test",
+    "source": "google",
+    "cost": "500",
+    "expected_followers": 2578
+  },
+  {
+    "productId": "test",
+    "source": "google",
+    "cost": "5",
+    "expected_followers": 9
+  },
+  {
+    "productId": "test",
+    "source": "google",
+    "cost": "5",
+    "expected_followers": 30
+  },
+  {
+    "productId": "test",
+    "source": "google",
+    "cost": "5",
+    "expected_followers": 13
+  },
+  {
+    "productId": "test",
+    "source": "google",
+    "cost": "5",
+    "expected_followers": 25
+  },
+  {
+    "productId": "test",
+    "source": "google",
+    "cost": "5",
+    "expected_followers": 7
+  }
 ]

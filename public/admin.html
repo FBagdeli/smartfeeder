@@ -3,6 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="stylesheet" href="admin.css">
 </head>
 <body>
   <h1>Admin</h1>
@@ -29,11 +30,11 @@
     <input type="checkbox" name="instagram" placeholder="Instagram">
     <label for="tiktok">Tiktok</label>
     <input type="checkbox" name="tiktok" placeholder="Tiktok">
-    <input type="text" name="cost" placeholder="Cost" value="0">
-    <input type="text" name="followers" placeholder="Followers" value="0">
+    <input type="text" name="cost" placeholder="Cost">
+    <input type="text" name="expected_followers" placeholder="Expected Followers">
     <input type="submit" value="Submit">
   </form>
-  <a href="/google-feed.xml">Google Feed</a>
+  <a href="/google-feed.xml">Google Feed</a> 
 
   <table id="campaigns-table">
     <thead>
@@ -41,7 +42,9 @@
         <th>Product ID</th>
         <th>Source</th>
         <th>Cost</th>
-        <th>Followers</th>
+        <th>Exp.Followers</th>
+        <th>G.Followers</th>
+        <th>Revenue</th>
       </tr>
     </thead>
     <tbody>
@@ -133,13 +136,12 @@
       const tbody = document.querySelector('#campaigns-table tbody');
       tbody.innerHTML = '';
       campaigns.forEach(campaign => {
-        console.log('campaign', campaign.productId);
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${campaign.productId}</td>
           <td>${campaign.source}</td>
           <td>${campaign.cost}</td>
-          <td>${campaign.followers}</td>
+          <td>${campaign.expected_followers}</td>
         `;
         tbody.appendChild(row);
       });
