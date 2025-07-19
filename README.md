@@ -1,0 +1,1 @@
+"This is a demo marketing tool combining product feeds and basic analytics for campaign performance — designed to simulate a real-world integration of Google Shopping feeds with campaign tracking and performance estimation."
