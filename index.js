@@ -68,12 +68,14 @@ app.get('/analytics', (req, res) => {
 
 app.post('/app/campaigns/', (req, res) => {
   const newCampaign = JSON.parse(fs.readFileSync('campaigns.json', 'utf8'));
-  const {link, google, instagram, tiktok, cost} = req.body
+  const {link, google, instagram, tiktok, cost, expected_followers} = req.body
   const campaign = {
     productId : link.split('/').pop().split('?')[0],
     source : google ? 'google' : instagram ? 'instagram' : tiktok ? 'tiktok' : null,
     cost,
-    expected_followers: Math.floor((Math.random() * 9 * Math.ceil(cost)) + Math.ceil(cost)),
+    expected_followers,
+    gained_followers: Math.floor((Math.random() * 9 * Math.ceil(expected_followers)) + Math.ceil(expected_followers)),
+    revenue: Math.floor((Math.random() * 9 * Math.ceil(expected_followers)) + Math.ceil(expected_followers)), 
 
   }
   newCampaign.push(campaign);
@@ -92,7 +94,9 @@ app.get('/app/campaigns/analytics', (req, res) => {
   const campaigns = JSON.parse(data);
   const result = campaigns.map(campaign => {
     return {
-      message: `Campaign with productId ${campaign.productId} has ${campaign.expected_followers} followers and roas is ${(campaign.expected_followers / campaign.cost).toFixed(2)} and cpl is ${((campaign.cost / campaign.expected_followers) * 100).toFixed(2)}%`,
+      message: `Campaign ${campaign.productId} on ${campaign.source} gained ${campaign.gained_followers} followers
+      with ROAS ${(campaign.revenue / campaign.cost).toFixed(2)}
+      and CPL ${((campaign.cost / campaign.gained_followers) * 100).toFixed(2)}%`,
     }
   });
   res.json({ message: 'Campaigns retrieved successfully', result });

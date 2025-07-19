@@ -53,6 +53,7 @@
   </table>
   <button onclick="showCampaigns()">Show Campaigns</button>
   <button onclick="analytics()">Analytics</button>
+  <p id="analytics-result"></p>
   <script>
     const form = document.querySelector('#product-form');
     form.addEventListener('submit', async (e) => {
@@ -142,6 +143,8 @@
           <td>${campaign.source}</td>
           <td>${campaign.cost}</td>
           <td>${campaign.expected_followers}</td>
+          <td>${campaign.gained_followers}</td>
+          <td>${campaign.revenue}</td>
         `;
         tbody.appendChild(row);
       });
@@ -152,8 +155,9 @@
         method: 'GET'
       });
       const {result} = await res.json(); 
+      document.getElementById('analytics-result').innerHTML = '';
       result.forEach(item => {
-        console.log('analytics', item.message);
+        document.getElementById('analytics-result').innerHTML += item.message + '<br>';
       });
     }
    
