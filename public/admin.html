@@ -18,9 +18,6 @@
     <input type="text" name="link" placeholder="Link">
     <input type="submit" value="Submit">
   </form>
-  <button onclick="trackView('p001', 'google')">Track View</button>
-  <button onclick="trackView('p001', 'instagram')">Track View</button>
-  <button onclick="trackView('p003', 'tiktok')">Track View</button>
 
   <form id="campaign-form">
     <input type="text" name="link" placeholder="Link">
@@ -75,18 +72,6 @@
         console.error('server response:', error);
       }
     });
-
-    const trackView = async (productId, source) => {
-      const res = await fetch(`/track-view/${productId}/${source}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ productId, source })
-      });
-      const result = await res.json();
-      console.log('server response:', result.message);
-    }
 
     const campaignForm = document.querySelector('#campaign-form');
     campaignForm.addEventListener('submit', async (e) => {
